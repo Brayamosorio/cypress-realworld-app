@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
       - run: npm ci
       - run: npm run test:unit
@@ -13,3 +15,12 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.organization=brayamosorio
+            -Dsonar.projectKey=Brayamosorio_cypress-realworld-app
